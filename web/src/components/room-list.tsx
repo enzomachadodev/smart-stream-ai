@@ -15,14 +15,14 @@ export function RoomList() {
 	const { data: rooms, isLoading } = useRooms();
 
 	return (
-		<Card>
+		<Card className="h-full lg:h-[calc(100vh_-_64px)] w-full lg:w-1/2">
 			<CardHeader>
 				<CardTitle>Salas Recentes</CardTitle>
 				<CardDescription>
 					Acesso rápido para salas criadas recentemente
 				</CardDescription>
 			</CardHeader>
-			<CardContent className="flex flex-col gap-3">
+			<CardContent className="flex flex-col gap-4 h-full overflow-y-auto">
 				{isLoading && (
 					<div className="flex items-center justify-center h-32">
 						<span className="text-muted-foreground">Carregando salas...</span>

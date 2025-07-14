@@ -6,7 +6,7 @@ interface QuestionListProps {
 }
 
 export function QuestionList({ roomId }: QuestionListProps) {
-	const { data: questions, isLoading } = useRoomQuestions(roomId);
+	const { data: questions, isLoading, isError } = useRoomQuestions(roomId);
 
 	return (
 		<div className="space-y-6">
@@ -17,6 +17,22 @@ export function QuestionList({ roomId }: QuestionListProps) {
 			{isLoading && (
 				<div className="flex items-center justify-center">
 					<span className="text-muted-foreground">Carregando perguntas...</span>
+				</div>
+			)}
+
+			{isError && (
+				<div className="flex items-center justify-center">
+					<span className="text-destructive">
+						Ocorreu um erro ao buscar as salas...
+					</span>
+				</div>
+			)}
+
+			{!questions?.length && (
+				<div className="flex items-center justify-center">
+					<span className="text-muted-foreground">
+						Nenhuma sala encontrada...
+					</span>
 				</div>
 			)}
 

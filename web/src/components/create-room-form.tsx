@@ -29,10 +29,11 @@ const createRoomSchema = z.object({
 export type CreateRoomFormData = z.infer<typeof createRoomSchema>;
 
 export function CreateRoomForm() {
-	const { mutateAsync: createRoom } = useCreateRoom();
+	const { mutateAsync: createRoom, isPending } = useCreateRoom();
 
 	const form = useForm({
 		resolver: zodResolver(createRoomSchema),
+		disabled: isPending,
 		defaultValues: {
 			name: "",
 			description: "",
@@ -40,13 +41,13 @@ export function CreateRoomForm() {
 	});
 
 	const handleCreateRoom = async (data: CreateRoomFormData) => {
-		await createRoom(data);
-
-		form.reset();
+		await createRoom(data).then(() => {
+			form.reset();
+		});
 	};
 
 	return (
-		<Card className="h-fit">
+		<Card className="h-fit w-full lg:w-1/2">
 			<CardHeader>
 				<CardTitle>Criar Sala</CardTitle>
 				<CardDescription>
@@ -59,7 +60,7 @@ export function CreateRoomForm() {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(handleCreateRoom)}
-						className="flex flex-col gap-3"
+						className="flex flex-col gap-4"
 					>
 						<FormField
 							control={form.control}
@@ -96,6 +97,7 @@ export function CreateRoomForm() {
 						<Button
 							className="w-full"
 							type="submit"
+							loading={isPending || form.formState.isSubmitting}
 						>
 							Criar Sala
 						</Button>

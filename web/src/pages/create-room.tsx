@@ -3,8 +3,8 @@ import { RoomList } from "@/components/room-list";
 
 export function CreateRoom() {
 	return (
-		<div className="min-h-screeen">
-			<div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 border gap-8">
+		<div className="h-screen lg:h-auto min-h-screeen">
+			<div className="container h-full mx-auto p-4 lg:py-8 flex flex-col lg:flex-row gap-4 lg:gap-8">
 				<CreateRoomForm />
 				<RoomList />
 			</div>

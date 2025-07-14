@@ -109,7 +109,7 @@ export function RecordRoomAudio() {
 	}
 
 	return (
-		<div className="h-screen flex items-center justify-center flex-col gap-3 text-center">
+		<div className="h-screen flex items-center justify-center flex-col gap-4 text-center">
 			{isRecording ? (
 				<Button onClick={stopRecording}>Parar gravação</Button>
 			) : (
