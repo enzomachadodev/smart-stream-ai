@@ -2,11 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type {
 	CreateQuestionRequest,
 	CreateQuestionResponse,
+	GetRoomQuestionsResponse,
 } from "./types/rooms";
 
 export function useCreateQuestion(roomId: string) {
 	const queryClient = useQueryClient();
-	const queryKey = ["get-questions"];
+	const queryKey = ["get-questions", roomId];
 
 	return useMutation({
 		mutationFn: async (data: CreateQuestionRequest) => {
@@ -26,9 +27,58 @@ export function useCreateQuestion(roomId: string) {
 			return result;
 		},
 
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey });
-			alert("Pergunta criada com sucesso!");
+		onMutate: ({ question }) => {
+			const questions =
+				queryClient.getQueryData<GetRoomQuestionsResponse>(queryKey);
+
+			const questionsArray = questions || [];
+
+			const newQuestion = {
+				id: crypto.randomUUID(),
+				question,
+				createdAt: new Date().toISOString(),
+				isGenerationgAnswer: true,
+			};
+
+			queryClient.setQueryData<GetRoomQuestionsResponse>(queryKey, [
+				newQuestion,
+				...questionsArray,
+			]);
+
+			return { newQuestion, questions };
+		},
+
+		onSuccess: (data, _, context) => {
+			queryClient.setQueryData<GetRoomQuestionsResponse>(
+				queryKey,
+				(questions) => {
+					if (!questions || !context.newQuestion) {
+						return questions;
+					}
+
+					return questions.map((question) => {
+						if (question.id === context.newQuestion.id) {
+							return {
+								...question,
+								id: data.questionId,
+								answer: data.answer,
+								isGenerationAnswer: false,
+							};
+						}
+
+						return question;
+					});
+				}
+			);
+		},
+
+		onError: (_error, _, context) => {
+			if (context?.questions) {
+				queryClient.setQueryData<GetRoomQuestionsResponse>(
+					queryKey,
+					context.questions
+				);
+			}
 		},
 	});
 }

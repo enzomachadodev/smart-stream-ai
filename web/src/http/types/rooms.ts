@@ -10,6 +10,7 @@ export type GetRoomQuestionsResponse = {
 	question: string;
 	answer?: string;
 	createdAt: string;
+	isGenerationAnswer?: boolean;
 }[];
 
 export type CreateRoomRequest = {
@@ -26,5 +27,6 @@ export type CreateQuestionRequest = {
 };
 
 export type CreateQuestionResponse = {
-	id: string;
+	questionId: string;
+	answer?: string;
 };
