@@ -180,4 +180,15 @@ body {
 	body {
 		@apply bg-background text-foreground antialiased;
 	}
+
+	::-webkit-scrollbar {
+		width: 5px;
+	}
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		background: var(--border);
+		border-radius: 5px;
+	}
 }
