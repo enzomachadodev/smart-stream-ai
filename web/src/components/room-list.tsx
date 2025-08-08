@@ -41,7 +41,7 @@ export function RoomList() {
 									className="text-xs"
 									variant="secondary"
 								>
-									{dayjs(room.createdAt).toNow()}
+									{dayjs(room.createdAt).fromNow()}
 								</Badge>
 								<Badge
 									className="text-xs"

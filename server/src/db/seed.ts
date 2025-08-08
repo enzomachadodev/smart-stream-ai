@@ -16,6 +16,7 @@ await seed(db, { rooms: schema.rooms, questions: schema.questions }).refine(
 				columns: {
 					name: f.companyName(),
 					description: f.loremIpsum(),
+					createdAt: f.date({ maxDate: new Date() }),
 				},
 			},
 			questions: {
